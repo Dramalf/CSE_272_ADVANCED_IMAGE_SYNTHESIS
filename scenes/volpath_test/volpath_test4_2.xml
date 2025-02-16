@@ -15,12 +15,16 @@
 			<float name="g" value="0.5"/>
 		</phase> -->
 	</medium>
-
+<bsdf type="diffuse" id="white">
+			<rgb name="reflectance" value="1.0 1.0 1.0"/>
+		</bsdf>
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
 		<float name="radius" value="0.75"/>
 
-		<ref name="interior" id="medium"/>
+				<ref name="bsdf" id="white"/>
+
+		<!-- <ref name="interior" id="medium"/> -->
 	</shape>
 
 	<shape type="sphere">

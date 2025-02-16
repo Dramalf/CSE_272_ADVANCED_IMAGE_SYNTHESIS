@@ -1,0 +1,129 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="spp" value="1080"/>
+	<default name="resx" value="480"/>
+	<default name="resy" value="320"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<integrator type="path" id="elm__0" name="elm__0">
+		<integer name="max_depth" value="12"/>
+	</integrator>
+	<sensor type="perspective" id="elm__1" name="elm__1">
+		<string name="fov_axis" value="x"/>
+		<float name="fov" value="21.722005"/>
+		<float name="principal_point_offset_x" value="0.000000"/>
+		<float name="principal_point_offset_y" value="-0.000000"/>
+		<float name="near_clip" value="0.100000"/>
+		<float name="far_clip" value="100.000000"/>
+		<transform name="to_world">
+			<rotate x="1" angle="-152.7790647134359"/>
+			<rotate y="1" angle="-34.56870412536383"/>
+			<rotate z="1" angle="169.99902346017024"/>
+			<translate value="10.039589 4.547009 9.743476"/>
+		</transform>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx"/>
+			<integer name="height" value="$resy"/>
+		</film>
+	</sensor>
+
+<!-- Materials -->
+
+	<bsdf type="disneybsdf" id="mat-材质.003" name="mat-材质.003">
+					<rgb name="baseColor" value="0.3 0.37 0.56"/>
+			<float name="specularTransmission" value="0.5"/>
+			<float name="metallic" value="0.5"/>
+			<float name="subsurface" value="0.5"/>
+			<float name="specular" value="0.5"/>
+			<float name="roughness" value="0.1"/>
+			<float name="specularTint" value="0"/>
+			<float name="anisotropic" value="0.5"/>
+			<float name="sheen" value="0.5"/>
+			<float name="sheenTint" value="0.5"/>
+			<float name="clearcoat" value="0.5"/>
+			<float name="clearcoatGloss" value="0.9"/>
+			<float name="eta" value="1.5"/>
+	</bsdf>
+	<bsdf type="disneybsdf" id="mat-材质.004" name="mat-材质.004">
+			<rgb name="baseColor" value="0.2 0.7 0.1"/>
+			<float name="specularTransmission" value="0.5"/>
+			<float name="metallic" value="0.5"/>
+			<float name="subsurface" value="0.5"/>
+			<float name="specular" value="0.5"/>
+			<float name="roughness" value="0.1"/>
+			<float name="specularTint" value="0"/>
+			<float name="anisotropic" value="0.5"/>
+			<float name="sheen" value="0.5"/>
+			<float name="sheenTint" value="0.5"/>
+			<float name="clearcoat" value="0.5"/>
+			<float name="clearcoatGloss" value="0.5"/>
+			<float name="eta" value="1.5"/>
+	</bsdf>
+	<bsdf type="disneybsdf" id="mat-材质.011" name="mat-材质.011">
+				<rgb name="baseColor" value="0.82 0.67 0.16"/>
+			<float name="specularTransmission" value="0.5"/>
+			<float name="metallic" value="1"/>
+			<float name="subsurface" value="0.5"/>
+			<float name="specular" value="0.5"/>
+			<float name="roughness" value="0"/>
+			<float name="specularTint" value="0"/>
+			<float name="anisotropic" value="0.5"/>
+			<float name="sheen" value="0.5"/>
+			<float name="sheenTint" value="0.5"/>
+			<float name="clearcoat" value="0.5"/>
+			<float name="clearcoatGloss" value="0.5"/>
+			<float name="eta" value="1.5"/>
+	</bsdf>
+	<bsdf type="disneymetal" id="mat-材质.012" name="mat-材质.012">
+<rgb name="baseColor" value="0.82 0.67 0.16"/>
+		<rgb name="baseColor" value="0.82 0.67 0.16"/>
+			<float name="roughness" value="0.2"/>
+			<float name="anisotropic" value="0.8"/>
+	</bsdf>
+
+<!-- Emitters -->
+
+	<emitter type="point" id="elm__6" name="elm__6">
+		<point name="position" x="8.076245307922363" y="3.9038619995117188" z="4.994545936584473"/>
+		<rgb value="159.154938 159.154938 159.154938" name="intensity"/>
+	</emitter>
+	<emitter type="envmap" id="Area_002-light">
+		<string name="filename" value="../matpreview/envmap.exr"/>
+		<transform name="toWorld">
+			<rotate y="1" angle="-180"/>
+			<matrix value="-0.224951 -0.000001 -0.974370 0.000000 -0.974370 0.000000 0.224951 0.000000 0.000000 1.000000 -0.000001 8.870000 0.000000 0.000000 0.000000 1.000000 "/>
+		</transform>
+		<float name="scale" value="3"/>
+	</emitter>
+<!-- Shapes -->
+
+	<shape type="ply" id="elm__4" name="elm__4">
+		<string name="filename" value="meshes/环体-材质.003.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.003" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__5" name="elm__5">
+		<string name="filename" value="meshes/环体-材质.004.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.004" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__8" name="elm__8">
+		<string name="filename" value="meshes/立方体.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.011" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__10" name="elm__10">
+		<string name="filename" value="meshes/锥体.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.012" name="bsdf"/>
+	</shape>
+
+<!-- Volumes -->
+
+</scene>

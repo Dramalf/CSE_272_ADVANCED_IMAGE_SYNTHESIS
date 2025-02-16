@@ -28,7 +28,7 @@ struct TVector2 {
 template <typename T>
 struct TVector3 {
     TVector3() {}
-
+    
     template <typename T2>
     TVector3(T2 x, T2 y, T2 z) : x(T(x)), y(T(y)), z(T(z)) {}
 

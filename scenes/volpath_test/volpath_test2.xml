@@ -5,20 +5,28 @@
 		<integer name="maxDepth" value="2"/>
 		<integer name="version" value="2"/>
 	</integrator>
+<medium type="homogeneous" id="medium_c">
+		<rgb name="sigmaA" value="0 0 0"/>
+		<rgb name="sigmaS" value="0 0 0.0"/>
+		<float name="scale" value="1"/>
 
+	<phase type="hg">
+			<float name="g" value="-0.5"/>
+		</phase> 
+	</medium>
 	<medium type="homogeneous" id="medium">
 		<rgb name="sigmaA" value="0.1 0.1 0.1"/>
 		<rgb name="sigmaS" value="0.7 0.7 0.7"/>
 		<float name="scale" value="1"/>
 
-<!-- 		<phase type="hg">
-			<float name="g" value="0.5"/>
-		</phase> -->
+	<phase type="hg">
+			<float name="g" value="-0.5"/>
+		</phase> 
 	</medium>
 
 	<shape type="sphere">
 		<point name="center" x="0" y="0" z="0"/>
-		<float name="radius" value="1.0"/>
+		<float name="radius" value="1"/>
 
 		<emitter type="area">
 			<rgb name="radiance" value="0.4 2.32 3.2"/>

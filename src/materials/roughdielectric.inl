@@ -179,3 +179,4 @@ std::optional<BSDFSampleRecord>
 TextureSpectrum get_texture_op::operator()(const RoughDielectric &bsdf) const {
     return bsdf.specular_reflectance;
 }
+

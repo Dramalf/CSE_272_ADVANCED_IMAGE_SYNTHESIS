@@ -1,0 +1,90 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="spp" value="48"/>
+	<default name="resx" value="960"/>
+	<default name="resy" value="540"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<integrator type="volpath">
+		<integer name="maxDepth" value="-1"/>
+		<integer name="version" value="6"/>
+	</integrator>
+	<sensor type="perspective" id="elm__3" name="elm__3">
+		<string name="fov_axis" value="x"/>
+		<float name="fov" value="39.597752"/>
+		<float name="principal_point_offset_x" value="0.000000"/>
+		<float name="principal_point_offset_y" value="-0.000000"/>
+		<float name="near_clip" value="0.100000"/>
+		<float name="far_clip" value="100.000000"/>
+		<transform name="to_world">
+			<rotate x="1" angle="175.93471739609976"/>
+			<rotate y="1" angle="-41.71300345002171"/>
+			<rotate z="1" angle="-176.65718748574704"/>
+			<translate value="12.358891 0.958309 13.925791"/>
+		</transform>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx"/>
+			<integer name="height" value="$resy"/>
+		</film>
+	</sensor>
+
+<!-- Materials -->
+	<medium type="heterogeneous" id="cloud">
+		<string name="method" value="woodcock"/>
+
+		<volume name="density" type="gridvolume">
+			<string name="filename" value="volumes/cloud.vol"/>
+		</volume>
+
+		<volume name="albedo" type="constvolume">
+			<rgb name="value" value="0.9"/>
+		</volume>
+		<float name="scale" value="100"/>
+
+		<float name="stepSize" value="0.1"/>
+
+		<phase type="hg">
+			<float name="g" value="0.0"/>
+		</phase>
+	</medium>
+	<bsdf type="twosided" id="default-bsdf" name="default-bsdf">
+		<bsdf type="diffuse" name="bsdf"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质" name="mat-材质">
+		<rgb value="0.800000 0.700000 0.300000" name="reflectance"/>
+	</bsdf>
+<!-- Emitters -->
+
+	<emitter type="envmap" id="elm__1" name="elm__1">
+		<string name="filename" value="../matpreview/envmap.exr"/>
+		<float name="scale" value="1.000000"/>
+		<transform name="to_world">
+			<matrix value="0.000000 0.000000 1.000000 0.000000 0.000000 1.000000 0.000000 0.000000 -1.000000 0.000000 0.000000 0.000000 0.000000 0.000000 0.000000 1.000000"/>
+		</transform>
+	</emitter>
+	<emitter type="point" id="elm__2" name="elm__2">
+		<point name="position" x="4.076245307922363" y="5.903861999511719" z="-1.0054539442062378"/>
+		<rgb value="79.577469 79.577469 79.577469" name="intensity"/>
+	</emitter>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="elm__5" name="elm__5">
+		<string name="filename" value="meshes/立方体.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="cloud" name="interior"/>
+	</shape>
+	<shape type="ply" id="elm__7" name="elm__7">
+		<string name="filename" value="meshes/平面.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质" name="bsdf"/>
+	</shape>
+<!-- Volumes -->
+
+</scene>

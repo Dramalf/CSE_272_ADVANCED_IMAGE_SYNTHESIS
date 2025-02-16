@@ -9,7 +9,7 @@
 /// The distribution that fits the best to the data we have so far (which is not a lot of data)
 /// is from Trowbridge and Reitz's 1975 paper "Average irregularity representation of a rough ray reflection",
 /// wildly known as "GGX" (seems to stand for "Ground Glass X" https://twitter.com/CasualEffects/status/783018211130441728).
-/// 
+///
 /// We will use a generalized version of GGX called Generalized Trowbridge and Reitz (GTR),
 /// proposed by Brent Burley and folks at Disney (https://www.disneyanimation.com/publications/physically-based-shading-at-disney/)
 /// as our normal distribution function. GTR2 is equivalent to GGX.
@@ -21,9 +21,10 @@
 /// for a really nice introduction.
 /// https://seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
 template <typename T>
-inline T schlick_fresnel(const T &F0, Real cos_theta) {
+inline T schlick_fresnel(const T &F0, Real cos_theta)
+{
     return F0 + (Real(1) - F0) *
-        pow(max(1 - cos_theta, Real(0)), Real(5));
+                    pow(max(1 - cos_theta, Real(0)), Real(5));
 }
 
 /// Fresnel equation of a dielectric interface.
@@ -31,7 +32,8 @@ inline T schlick_fresnel(const T &F0, Real cos_theta) {
 /// n_dot_i: abs(cos(incident angle))
 /// n_dot_t: abs(cos(transmission angle))
 /// eta: eta_transmission / eta_incident
-inline Real fresnel_dielectric(Real n_dot_i, Real n_dot_t, Real eta) {
+inline Real fresnel_dielectric(Real n_dot_i, Real n_dot_t, Real eta)
+{
     assert(n_dot_i >= 0 && n_dot_t >= 0 && eta > 0);
     Real rs = (n_dot_i - eta * n_dot_t) / (n_dot_i + eta * n_dot_t);
     Real rp = (eta * n_dot_i - n_dot_t) / (eta * n_dot_i + n_dot_t);
@@ -41,13 +43,15 @@ inline Real fresnel_dielectric(Real n_dot_i, Real n_dot_t, Real eta) {
 
 /// https://seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
 /// This is a specialized version for the code above, only using the incident angle.
-/// The transmission angle is derived from 
+/// The transmission angle is derived from
 /// n_dot_i: cos(incident angle) (can be negative)
 /// eta: eta_transmission / eta_incident
-inline Real fresnel_dielectric(Real n_dot_i, Real eta) {
+inline Real fresnel_dielectric(Real n_dot_i, Real eta)
+{
     assert(eta > 0);
     Real n_dot_t_sq = 1 - (1 - n_dot_i * n_dot_i) / (eta * eta);
-    if (n_dot_t_sq < 0) {
+    if (n_dot_t_sq < 0)
+    {
         // total internal reflection
         return 1;
     }
@@ -55,14 +59,16 @@ inline Real fresnel_dielectric(Real n_dot_i, Real eta) {
     return fresnel_dielectric(fabs(n_dot_i), n_dot_t, eta);
 }
 
-inline Real GTR2(Real n_dot_h, Real roughness) {
+inline Real GTR2(Real n_dot_h, Real roughness)
+{
     Real alpha = roughness * roughness;
     Real a2 = alpha * alpha;
     Real t = 1 + (a2 - 1) * n_dot_h * n_dot_h;
-    return a2 / (c_PI * t*t);
+    return a2 / (c_PI * t * t);
 }
 
-inline Real GGX(Real n_dot_h, Real roughness) {
+inline Real GGX(Real n_dot_h, Real roughness)
+{
     return GTR2(n_dot_h, roughness);
 }
 
@@ -72,7 +78,8 @@ inline Real GGX(Real n_dot_h, Real roughness) {
 /// https://jcgt.org/published/0003/02/03/paper.pdf
 /// The derivation is based on Smith's paper "Geometrical shadowing of a random rough surface".
 /// Note that different microfacet distributions have different masking terms.
-inline Real smith_masking_gtr2(const Vector3 &v_local, Real roughness) {
+inline Real smith_masking_gtr2(const Vector3 &v_local, Real roughness)
+{
     Real alpha = roughness * roughness;
     Real a2 = alpha * alpha;
     Vector3 v2 = v_local * v_local;
@@ -82,9 +89,11 @@ inline Real smith_masking_gtr2(const Vector3 &v_local, Real roughness) {
 
 /// See "Sampling the GGX Distribution of Visible Normals", Heitz, 2018.
 /// https://jcgt.org/published/0007/04/01/
-inline Vector3 sample_visible_normals(const Vector3 &local_dir_in, Real alpha, const Vector2 &rnd_param) {
+inline Vector3 sample_visible_normals(const Vector3 &local_dir_in, Real alpha, const Vector2 &rnd_param)
+{
     // The incoming direction is in the "ellipsodial configuration" in Heitz's paper
-    if (local_dir_in.z < 0) {
+    if (local_dir_in.z < 0)
+    {
         // Ensure the input is on top of the surface.
         return -sample_visible_normals(-local_dir_in, alpha, rnd_param);
     }
@@ -103,7 +112,7 @@ inline Vector3 sample_visible_normals(const Vector3 &local_dir_in, Real alpha, c
     Real s = (1 + hemi_dir_in.z) / 2;
     t2 = (1 - s) * sqrt(1 - t1 * t1) + s * t2;
     // Point in the disk space
-    Vector3 disk_N{t1, t2, sqrt(max(Real(0), 1 - t1*t1 - t2*t2))};
+    Vector3 disk_N{t1, t2, sqrt(max(Real(0), 1 - t1 * t1 - t2 * t2))};
 
     // Reprojection onto hemisphere -- we get our sampled normal in hemisphere space.
     Frame hemi_frame(hemi_dir_in);
@@ -112,3 +121,41 @@ inline Vector3 sample_visible_normals(const Vector3 &local_dir_in, Real alpha, c
     // Transforming the normal back to the ellipsoid configuration
     return normalize(Vector3{alpha * hemi_N.x, alpha * hemi_N.y, max(Real(0), hemi_N.z)});
 }
+
+inline Real disney_metal_smith_masking_G(const Vector3 &wl, Real alpha_x, Real alpha_y)
+{
+    Real t1 = (wl.x * alpha_x) * (wl.x * alpha_x);
+    Real t2 = (wl.y * alpha_y) * (wl.y * alpha_y);
+    Real t3 = wl.z * wl.z;
+    Real lambda = (sqrt(1 + t1 * t2 / t3) - 1) / 2;
+    return 1 / (1 + lambda);
+}
+
+inline Real GTR1(Real n_dot_h, Real alpha_g)
+{
+    Real a2 = alpha_g * alpha_g;
+    Real t = 1 + (a2 - 1) * n_dot_h * n_dot_h;
+    return (a2 - 1) / (c_PI * log(a2) * t);
+}
+
+inline void calculate_bsdf_weights(
+    std::vector<Real> &weights,
+    Real specular,
+    Real specular_transmission,
+    Real metallic,
+    Real clearcoat,
+    Real sheen)
+{
+    weights.resize(5);
+    // diffuse
+    weights[0] = (1 - specular_transmission) * (1 - metallic);
+    // sheen
+    weights[1] = (1 - metallic) * sheen;
+    // metal
+    weights[2] = 1 - specular_transmission * (1 - metallic);
+    // clearcoat
+    weights[3] = 0.25 * clearcoat;
+    // glass
+    weights[4] = (1 - metallic) * specular_transmission;
+}
+

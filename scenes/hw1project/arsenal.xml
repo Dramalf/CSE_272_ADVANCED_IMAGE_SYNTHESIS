@@ -1,0 +1,120 @@
+<scene version="2.1.0">
+
+<!-- Defaults, these can be set via the command line: -Darg=value -->
+
+	<default name="spp" value="4096"/>
+	<default name="resx" value="720"/>
+	<default name="resy" value="640"/>
+
+<!-- Camera and Rendering Parameters -->
+
+	<integrator type="path" id="elm__0" name="elm__0">
+		<integer name="max_depth" value="12"/>
+	</integrator>
+	<sensor type="perspective" id="elm__2" name="elm__2">
+		<string name="fov_axis" value="x"/>
+		<float name="fov" value="21.722005"/>
+		<float name="principal_point_offset_x" value="0.000000"/>
+		<float name="principal_point_offset_y" value="-0.000000"/>
+		<float name="near_clip" value="0.100000"/>
+		<float name="far_clip" value="100.000000"/>
+		<transform name="to_world">
+			<rotate x="1" angle="-154.76807044125698"/>
+			<rotate y="1" angle="-37.40229689500283"/>
+			<rotate z="1" angle="169.23468431091078"/>
+			<translate value="10.039589 4.547009 9.743476"/>
+		</transform>
+		<sampler type="independent" name="sampler">
+			<integer name="sample_count" value="$spp"/>
+		</sampler>
+		<film type="hdrfilm" name="film">
+			<integer name="width" value="$resx"/>
+			<integer name="height" value="$resy"/>
+		</film>
+	</sensor>
+
+<!-- Materials -->
+
+	<bsdf type="diffuse" id="mat-材质" name="mat-材质">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.001" name="mat-材质.001">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.008" name="mat-材质.008">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.003" name="mat-材质.003">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.004" name="mat-材质.004">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.006" name="mat-材质.006">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+	<bsdf type="diffuse" id="mat-材质.007" name="mat-材质.007">
+		<rgb value="1.000000 0.000000 0.300000" name="reflectance"/>
+	</bsdf>
+
+<!-- Emitters -->
+
+	<emitter type="point" id="elm__1" name="elm__1">
+		<point name="position" x="-7.923754692077637" y="5.903861999511719" z="-1.0054539442062378"/>
+		<rgb value="159.154938 159.154938 159.154938" name="intensity"/>
+	</emitter>
+	<emitter type="point" id="elm__13" name="elm__13">
+		<point name="position" x="1.0" y="-1.0" z="-2.0"/>
+		<rgb value="0.795775 0.795775 0.795775" name="intensity"/>
+	</emitter>
+	<emitter type="point" id="elm__19" name="elm__19">
+		<point name="position" x="1.0762453079223633" y="-1.0961380004882812" z="4.994545936584473"/>
+		<rgb value="159.154938 159.154938 159.154938" name="intensity"/>
+	</emitter>
+
+<!-- Shapes -->
+
+	<shape type="ply" id="elm__4" name="elm__4">
+		<string name="filename" value="meshes/Cube_001.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__7" name="elm__7">
+		<string name="filename" value="meshes/立方体-材质.001.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.001" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__8" name="elm__8">
+		<string name="filename" value="meshes/立方体-材质.008.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.008" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__11" name="elm__11">
+		<string name="filename" value="meshes/环体-材质.003.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.003" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__12" name="elm__12">
+		<string name="filename" value="meshes/环体-材质.004.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.004" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__15" name="elm__15">
+		<string name="filename" value="meshes/立方体_002.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.006" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__16" name="elm__16">
+		<string name="filename" value="meshes/立方体_003.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.006" name="bsdf"/>
+	</shape>
+	<shape type="ply" id="elm__18" name="elm__18">
+		<string name="filename" value="meshes/平面.ply"/>
+		<boolean name="face_normals" value="true"/>
+		<ref id="mat-材质.007" name="bsdf"/>
+	</shape>
+
+<!-- Volumes -->
+
+</scene>
